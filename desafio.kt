@@ -1,21 +1,54 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
 
 enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
 
-class Usuario
+data class Usuario(val nome: String)
 
-data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
+data class ConteudoEducacional(val nome: String, val duracao: Int = 60)
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+data class Formacao(val nome: String, val conteudos: List<ConteudoEducacional>, val nivel: Nivel) {
 
-    val inscritos = mutableListOf<Usuario>()
-    
+    private val inscritos = mutableListOf<Usuario>()
+
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        inscritos.add(usuario)
+        println("Usuário ${usuario.nome} cadastrado com sucesso.")
+    }
+
+    fun listaInscritos() {
+        if (inscritos.isEmpty()) {
+            println("Nenhum usuário matriculado.")
+        } else {
+            println("Usuários matriculados na formação $nome:")
+            inscritos.forEach { println("- ${it.nome}") }
+        }
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+    // Criando alguns conteúdos educacionais
+    val conteudoKotlin = ConteudoEducacional("Kotlin", 120)
+    val conteudoJava = ConteudoEducacional("Java", 180)
+    val conteudoWeb = ConteudoEducacional("Desenvolvimento Web", 200)
+
+    // Criando uma formação
+    val formacaoDesenvolvedor = Formacao(
+        nome = "Desenvolvedor Fullstack",
+        conteudos = listOf(conteudoKotlin, conteudoJava, conteudoWeb),  // Lista de conteúdos
+        nivel = Nivel.INTERMEDIARIO  // Nível da formação
+    )
+    // Criando alguns usuários
+    val usuario1 = Usuario("Alice")
+    val usuario2 = Usuario("Bob")
+    val usuario3 = Usuario("Carol")
+
+    // Matriculando os usuários na formação
+    formacaoDesenvolvedor.matricular(usuario1)
+    formacaoDesenvolvedor.matricular(usuario2)
+
+    // Listando os inscritos
+    formacaoDesenvolvedor.listaInscritos()
+
+    // Testando com mais matrículas
+    formacaoDesenvolvedor.matricular(usuario3)
+    formacaoDesenvolvedor.listaInscritos()
 }
